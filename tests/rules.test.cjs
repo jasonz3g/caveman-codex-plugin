@@ -95,6 +95,23 @@ test('keeps skill metadata and examples consistent with Codex defaults', () => {
   assert.equal(existsSync(readmePath), false);
 });
 
+test('bundles simplified-Chinese wenyan copy', () => {
+  const skill = readFileSync(skillPath, 'utf8');
+  const expectedCopy = [
+    'classical particles (之/乃/为/其)',
+    '- wenyan-lite: "组件频重绘，以每绘新生对象参照故。以 useMemo 包之。"',
+    '- wenyan-full: "每绘新生对象参照，故重绘；以 useMemo 包之则免。"',
+    '- wenyan-ultra: "新参照则重绘。useMemo 包之。"',
+    '- wenyan-full: "池蓄已开之连，不逐请而新开，省握手之费。"',
+    '- wenyan-ultra: "池蓄连，免逐请新开，省握手。"',
+  ];
+
+  for (const line of expectedCopy) {
+    assert.ok(skill.includes(line), `missing simplified copy: ${line}`);
+  }
+  assert.doesNotMatch(skill, /[為組頻繪對參則開連請費]/u);
+});
+
 test('loadSkillBody removes frontmatter and preserves shared rules', () => {
   const body = loadSkillBody(pluginRoot);
 

@@ -38,23 +38,23 @@ Yes: "Bug in auth middleware. Token expiry check use `<` not `<=`. Fix:"
 | **full** | Drop articles, fragments OK, short synonyms. Classic caveman. No tool-call narration, no decorative tables/emoji, no long raw error-log dumps unless asked. Standard acronyms OK; no invented abbreviations |
 | **ultra** | Strip conjunctions when cause-then-effect stay unambiguous. One word when one word enough. State each fact once. NO prose abbreviations (cfg/impl/req/res/fn/auth), NO arrows (X → Y) — measured zero token saving under tokenizer, cost decode clarity. Code symbols, function names, API names, error strings: never touch |
 | **wenyan-lite** | Semi-classical. Drop filler/hedging but keep grammar structure, classical register |
-| **wenyan-full** | Maximum classical terseness. Fully 文言文. 80-90% character reduction. Classical sentence patterns, verbs precede objects, subjects often omitted, classical particles (之/乃/為/其) |
+| **wenyan-full** | Maximum classical terseness. Fully 文言文. 80-90% character reduction. Classical sentence patterns, verbs precede objects, subjects often omitted, classical particles (之/乃/为/其) |
 | **wenyan-ultra** | Extreme abbreviation while keeping classical Chinese feel. Maximum compression, ultra terse |
 
 Example — "Why React component re-render?"
 - lite: "Your component re-renders because you create a new object reference each render. Wrap it in `useMemo`."
 - full: "New object reference each render. Inline object prop = new reference = re-render. Wrap in `useMemo`."
 - ultra: "Inline object prop, new reference, re-render. `useMemo`."
-- wenyan-lite: "組件頻重繪，以每繪新生對象參照故。以 useMemo 包之。"
-- wenyan-full: "每繪新生對象參照，故重繪；以 useMemo 包之則免。"
-- wenyan-ultra: "新參照則重繪。useMemo 包之。"
+- wenyan-lite: "组件频重绘，以每绘新生对象参照故。以 useMemo 包之。"
+- wenyan-full: "每绘新生对象参照，故重绘；以 useMemo 包之则免。"
+- wenyan-ultra: "新参照则重绘。useMemo 包之。"
 
 Example — "Explain database connection pooling."
 - lite: "Connection pooling reuses open connections instead of creating new ones per request. Avoids repeated handshake overhead."
 - full: "Pool reuse open DB connections. No new connection per request. Skip handshake overhead."
 - ultra: "Pool reuse open DB connections. No per-request handshake."
-- wenyan-full: "池蓄已開之連，不逐請而新開，省握手之費。"
-- wenyan-ultra: "池蓄連，免逐請新開，省握手。"
+- wenyan-full: "池蓄已开之连，不逐请而新开，省握手之费。"
+- wenyan-ultra: "池蓄连，免逐请新开，省握手。"
 
 ## Auto-Clarity
 
