@@ -1,0 +1,27 @@
+{
+  "name": "caveman",
+  "version": "0.1.0",
+  "description": "Persistent token-efficient response modes for Codex sessions.",
+  "author": {
+    "name": "Julius Brussee; Codex adaptation by Jason",
+    "url": "https://github.com/JuliusBrussee/caveman"
+  },
+  "homepage": "https://github.com/JuliusBrussee/caveman",
+  "repository": "https://github.com/JuliusBrussee/caveman",
+  "license": "MIT",
+  "keywords": ["caveman", "concise", "tokens", "wenyan", "hooks"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Caveman",
+    "shortDescription": "Keep Codex responses concise across a session.",
+    "longDescription": "Adds persistent caveman and literary-Chinese response modes with per-session switching and lifecycle reinforcement.",
+    "developerName": "Julius Brussee; Codex adaptation by Jason",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Use wenyan-full mode for this session",
+      "Switch caveman to lite mode",
+      "Stop caveman for this session"
+    ]
+  }
+}
