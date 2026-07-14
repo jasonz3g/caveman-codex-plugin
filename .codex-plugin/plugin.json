@@ -1,6 +1,6 @@
 {
   "name": "caveman",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260714105607",
   "description": "Persistent token-efficient response modes for Codex sessions.",
   "author": {
     "name": "Julius Brussee; Codex adaptation by Jason",
@@ -9,7 +9,13 @@
   "homepage": "https://github.com/JuliusBrussee/caveman",
   "repository": "https://github.com/JuliusBrussee/caveman",
   "license": "MIT",
-  "keywords": ["caveman", "concise", "tokens", "wenyan", "hooks"],
+  "keywords": [
+    "caveman",
+    "concise",
+    "tokens",
+    "wenyan",
+    "hooks"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Caveman",
