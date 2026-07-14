@@ -3,11 +3,11 @@
   "version": "0.1.0+codex.20260714105607",
   "description": "Persistent token-efficient response modes for Codex sessions.",
   "author": {
-    "name": "Julius Brussee; Codex adaptation by Jason",
-    "url": "https://github.com/JuliusBrussee/caveman"
+    "name": "Jason",
+    "url": "https://github.com/jasonz3g"
   },
-  "homepage": "https://github.com/JuliusBrussee/caveman",
-  "repository": "https://github.com/JuliusBrussee/caveman",
+  "homepage": "https://github.com/jasonz3g/caveman-codex-plugin",
+  "repository": "https://github.com/jasonz3g/caveman-codex-plugin",
   "license": "MIT",
   "keywords": [
     "caveman",
@@ -21,7 +21,7 @@
     "displayName": "Caveman",
     "shortDescription": "Keep Codex responses concise across a session.",
     "longDescription": "Adds persistent caveman and literary-Chinese response modes with per-session switching and lifecycle reinforcement.",
-    "developerName": "Julius Brussee; Codex adaptation by Jason",
+    "developerName": "Jason",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
