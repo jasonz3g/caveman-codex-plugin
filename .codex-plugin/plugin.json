@@ -1,6 +1,6 @@
 {
   "name": "caveman",
-  "version": "0.1.0+codex.20260714105607",
+  "version": "0.1.0+codex.20260715010908",
   "description": "Persistent token-efficient response modes for Codex sessions.",
   "author": {
     "name": "Jason",

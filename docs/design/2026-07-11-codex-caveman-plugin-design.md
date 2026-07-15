@@ -122,8 +122,13 @@ hook source requires restoration.
 
 `hooks/hooks.json` registers:
 
-- `SessionStart` with matcher `startup|resume|clear|compact`;
+- `SessionStart` with matcher `startup|clear|compact`;
 - `UserPromptSubmit` without a matcher.
+
+`resume` is intentionally absent from the registry because a host may emit the
+same resume event repeatedly for one turn. The handler retains its bounded
+resume path for compatibility, but normal resumed-thread restoration occurs on
+the first `UserPromptSubmit` event instead of publishing repeated full context.
 
 Both commands execute a CommonJS entry point with Node. A hook accepts at most
 1 MiB of stdin, requires fatal UTF-8 JSON decoding, and accepts only a JSON
@@ -162,7 +167,7 @@ Behavior by source:
 | --- | --- |
 | `startup` | Select configured default and explicitly replace this session record. |
 | `clear` | Select configured default and explicitly replace this session record. |
-| `resume` | Restore validated state; initialize only confirmed missing state. |
+| `resume` | Compatibility-only handler path; restore validated state or initialize only confirmed missing state. It is not registered. |
 | `compact` | Restore validated state; initialize only confirmed missing state, then reinject authoritative context. |
 
 For `startup` and `clear`, a failed write still applies the selected default to
@@ -201,10 +206,12 @@ on reading old state. Successful writes inject full context for the new mode.
 A failed or unavailable store applies that explicit choice only to the current
 turn and emits the fixed non-persistence warning.
 
-An ordinary prompt restores validated state, initializes only confirmed
-missing state without replacing a concurrent winner, and emits a short current
-mode reminder. Unavailable state yields `off` plus the fixed warning and no
-write.
+An ordinary prompt with validated state emits a short current-mode reminder.
+If state is confirmed missing, it initializes without replacing a concurrent
+winner and emits full active context, or the authoritative `off` reminder,
+once; later prompts use the short reminder. This is the restoration path for a
+thread first encountered after plugin install. Unavailable state yields `off`
+plus the fixed warning and no write.
 
 Questions, negated requests, unknown mode names, oversized prompts, and longer
 unrelated phrases never change state. Intent recognition is bounded by exact
@@ -322,7 +329,8 @@ The automated suite covers:
 - configuration precedence and filesystem races;
 - prompt intent, false-positive, negation, and size boundaries;
 - skill metadata, rule filtering, fallback, and off behavior;
-- all four `SessionStart` sources;
+- all four bounded `SessionStart` handler sources plus the registry exclusion
+  of `resume`;
 - persistent and stateless `UserPromptSubmit` sequences;
 - session isolation, concurrent initialization, unavailable state, stable
   reads, atomic writes, and durability failures;

@@ -52,7 +52,8 @@ and bundled skill resolve only through package-relative paths.
   `./skills/`, metadata, attribution, and no redundant hook field.
 - [x] Create `hooks/hooks.json` with exact command paths based on
   `PLUGIN_ROOT`.
-- [x] Register `SessionStart` for `startup|resume|clear|compact`.
+- [x] Register `SessionStart` for `startup|clear|compact`; exclude `resume` so
+  repeated host resume events cannot republish full context.
 - [x] Register `UserPromptSubmit` without a matcher.
 - [x] Add dependency-free `package.json`, Node `>=18`, MIT license, and the
   core test command.
@@ -152,8 +153,8 @@ selected intensity; invalid skill bytes never enter hook output.
 - [x] Emit a bounded built-in fallback if the skill cannot be validated.
 - [x] Render `off` as an authoritative normal-prose reminder without active
   rules.
-- [x] Provide full context for activation and short reminders for ordinary
-  turns.
+- [x] Provide full context for activation and first missing-state restoration,
+  then short reminders for ordinary turns with validated state.
 
 Primary commits: `173adba`, `2946f9e`, `d2dc82d`, `a4f041a`, `c346365`,
 `4c90fe3`, `41679b1`.
@@ -193,7 +194,8 @@ reinforce current mode without accidental transitions or state clobbering.
 - [x] On write failure, apply the explicit transition only to the current turn
   and emit the fixed warning.
 - [x] For ordinary prompts, restore found state or initialize only confirmed
-  missing state.
+  missing state, injecting full active context or the authoritative `off`
+  reminder once after that initialization.
 - [x] Honor concurrent initialization winners, including `off`.
 - [x] On unavailable passive state, render `off`, warn, and perform no write.
 - [x] Reinforce active and off modes without rewriting valid state.

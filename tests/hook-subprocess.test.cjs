@@ -517,9 +517,13 @@ test('UserPromptSubmit executable initializes the isolated injected default', ()
     ]);
     const output = parseSuccessfulHook(result);
 
-    assert.equal(
+    assert.match(
       output.hookSpecificOutput.additionalContext,
-      'CAVEMAN CURRENT MODE: ultra. Preserve technical facts, code, commands, symbols, and exact error text. Apply auto-clarity exceptions. This overrides earlier caveman mode context.',
+      /^CAVEMAN MODE ACTIVE — level: ultra$/m,
+    );
+    assert.match(
+      output.hookSpecificOutput.additionalContext,
+      /Ultra subprocess rule/,
     );
     assert.equal(output.systemMessage, undefined);
     assert.deepEqual(
@@ -669,14 +673,14 @@ test('UserPromptSubmit executable rejects strict event-boundary violations', () 
   }
 });
 
-test('hooks.json preserves SessionStart and registers exact UserPromptSubmit contract', () => {
+test('hooks.json excludes resume and registers exact hook contracts', () => {
   const hooks = JSON.parse(
     readFileSync(join(PROJECT_ROOT, 'hooks', 'hooks.json'), 'utf8'),
   );
 
   assert.deepEqual(hooks.hooks.SessionStart, [
     {
-      matcher: 'startup|resume|clear|compact',
+      matcher: 'startup|clear|compact',
       hooks: [
         {
           type: 'command',

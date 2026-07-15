@@ -1,9 +1,9 @@
 # Codex Caveman 0.1 Core Progress
 
-Updated: 2026-07-14
+Updated: 2026-07-15
 Branch: `main`
-Worktree: `/Users/jason/plugins/caveman`
-Core release head: `412738e`
+Worktree: `/Users/jason/home/Github/caveman-codex-plugin`
+Core baseline: `412738e`
 Status: Complete
 
 ## Delivered Scope
@@ -11,7 +11,8 @@ Status: Complete
 Caveman 0.1 contains the complete core plugin:
 
 - native manifest and hook registry;
-- `SessionStart` for `startup`, `resume`, `clear`, and `compact`;
+- registered `SessionStart` for `startup`, `clear`, and `compact`, with
+  `resume` intentionally excluded to prevent repeated host publication;
 - `UserPromptSubmit` mode switching and per-turn reinforcement;
 - canonical `off`, `lite`, `full`, `ultra`, `wenyan-lite`, `wenyan-full`, and
   `wenyan-ultra` modes, with `wenyan` as an alias;
@@ -45,7 +46,9 @@ There is no pending 0.1 core feature slice.
 
 - `startup` and `clear` reset only the addressed session to the configured
   default.
-- `resume` and `compact` restore validated active or off state.
+- `compact` restores validated active or off state and reinjects full context.
+- The bounded `resume` handler path remains for compatibility but is not
+  registered.
 - Confirmed missing state is initialized without replacing a concurrent
   winner.
 - Unavailable state fails closed to `off`, warns, and is not overwritten.
@@ -55,7 +58,10 @@ There is no pending 0.1 core feature slice.
 ### UserPromptSubmit
 
 - Exact slash, dollar, English, and Chinese commands persist canonical modes.
-- Ordinary prompts reinforce active or off state without rewriting it.
+- The first ordinary prompt for confirmed missing state initializes it and
+  injects full active context or the authoritative `off` reminder once; later
+  prompts reinforce active or off state with a short reminder and without
+  rewriting it.
 - Questions, negations, unknown modes, oversized input, and incidental text do
   not change mode.
 - Explicit write failure applies only to the current turn with a fixed warning.
@@ -91,12 +97,11 @@ There is no pending 0.1 core feature slice.
 
 ## Verification Record
 
-Verification was rerun from clean committed bytes and again after integration
-to `main`:
+Verification was rerun for the current source tree on 2026-07-15:
 
 | Check | Result |
 | --- | --- |
-| Core test suite | 323 passed, 0 failed, 0 skipped, 0 todo |
+| Core test suite | 324 passed, 0 failed, 0 skipped, 0 todo |
 | CommonJS syntax | All `hooks/*.cjs`, `lib/*.cjs`, and `tests/*.test.cjs` passed |
 | Manifest and hook registry | Valid JSON, schema and packaged paths confirmed |
 | Packaged hook smoke | Startup, lite transition, passive persistence, and off transition passed |
@@ -105,10 +110,9 @@ to `main`:
 | Standards review | HIGH 0, MEDIUM 0, LOW 0 |
 | Spec review | HIGH 0, MEDIUM 0, LOW 0 |
 
-GitNexus comparison against the pre-integration `main` reported LOW risk and no
-affected execution process. Core integration fast-forwarded both `main` and
-`feat/codex-caveman-hooks` to `412738e`; later documentation-only commits do not
-change that core release head.
+Pre-change GitNexus upstream impact for the prompt hook was LOW. Current
+`detect_changes` maps the entry-point edit to six existing prompt-handling
+processes; focused tests and the full suite cover the changed path.
 
 ## Runtime Baseline
 

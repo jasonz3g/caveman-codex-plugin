@@ -226,15 +226,20 @@ test('ordinary prompt preserves authoritative off state without rewriting it', (
   });
 });
 
-test('ordinary prompt initializes confirmed missing state to the effective default', () => {
+test('ordinary prompt initializes missing state and injects its full context once', () => {
   withHarness(({ env, event, store }) => {
     assert.deepEqual(store.read('prompt-session'), { kind: 'missing' });
 
     const output = handleUserPromptSubmit(event('Explain ownership'), env);
 
     assert.deepEqual(store.read('prompt-session'), found('wenyan-full'));
-    assertReminder(output, 'wenyan-full');
+    assertFullMode(output, 'wenyan-full');
+    assert.match(context(output), /Wenyan full prompt rule/);
     assert.equal(output.systemMessage, undefined);
+
+    const reinforced = handleUserPromptSubmit(event('Continue'), env);
+    assertReminder(reinforced, 'wenyan-full');
+    assert.doesNotMatch(context(reinforced), /Wenyan full prompt rule/);
   });
 });
 

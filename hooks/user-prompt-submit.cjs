@@ -21,7 +21,9 @@ function passiveMode(store, sessionId, defaultMode) {
   if (state.kind === 'found') return { mode: state.mode };
   if (state.kind === 'missing') {
     const initialized = store.initializeIfMissing(sessionId, defaultMode);
-    if (initialized.kind === 'found') return { mode: initialized.mode };
+    if (initialized.kind === 'found') {
+      return { mode: initialized.mode, needsFullContext: true };
+    }
   }
   return { mode: 'off', systemMessage: STATE_UNAVAILABLE_MESSAGE };
 }
@@ -67,7 +69,9 @@ function handleUserPromptSubmit(event, env = process.env) {
     : { mode: defaultMode };
   return contextResult(
     'UserPromptSubmit',
-    buildReminder(selected.mode),
+    selected.needsFullContext
+      ? buildContextForMode({ pluginRoot: env.PLUGIN_ROOT, mode: selected.mode })
+      : buildReminder(selected.mode),
     selected.systemMessage,
   );
 }
