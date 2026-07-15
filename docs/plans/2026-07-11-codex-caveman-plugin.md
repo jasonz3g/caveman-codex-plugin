@@ -52,8 +52,8 @@ and bundled skill resolve only through package-relative paths.
   `./skills/`, metadata, attribution, and no redundant hook field.
 - [x] Create `hooks/hooks.json` with exact command paths based on
   `PLUGIN_ROOT`.
-- [x] Register `SessionStart` for `startup|clear|compact`; exclude `resume` so
-  repeated host resume events cannot republish full context.
+- [x] Register `SessionStart` for `startup|clear`; exclude `resume` and
+  `compact` so repeated host lifecycle events cannot republish full context.
 - [x] Register `UserPromptSubmit` without a matcher.
 - [x] Add dependency-free `package.json`, Node `>=18`, MIT license, and the
   core test command.

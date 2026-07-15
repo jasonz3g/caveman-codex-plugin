@@ -673,14 +673,14 @@ test('UserPromptSubmit executable rejects strict event-boundary violations', () 
   }
 });
 
-test('hooks.json excludes resume and registers exact hook contracts', () => {
+test('hooks.json excludes replay-prone lifecycle sources and registers exact hook contracts', () => {
   const hooks = JSON.parse(
     readFileSync(join(PROJECT_ROOT, 'hooks', 'hooks.json'), 'utf8'),
   );
 
   assert.deepEqual(hooks.hooks.SessionStart, [
     {
-      matcher: 'startup|clear|compact',
+      matcher: 'startup|clear',
       hooks: [
         {
           type: 'command',

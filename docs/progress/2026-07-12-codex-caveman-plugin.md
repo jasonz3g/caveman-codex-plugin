@@ -11,8 +11,8 @@ Status: Complete
 Caveman 0.1 contains the complete core plugin:
 
 - native manifest and hook registry;
-- registered `SessionStart` for `startup`, `clear`, and `compact`, with
-  `resume` intentionally excluded to prevent repeated host publication;
+- registered `SessionStart` for `startup` and `clear`, with `resume` and
+  `compact` intentionally excluded to prevent repeated host publication;
 - `UserPromptSubmit` mode switching and per-turn reinforcement;
 - canonical `off`, `lite`, `full`, `ultra`, `wenyan-lite`, `wenyan-full`, and
   `wenyan-ultra` modes, with `wenyan` as an alias;
@@ -46,9 +46,11 @@ There is no pending 0.1 core feature slice.
 
 - `startup` and `clear` reset only the addressed session to the configured
   default.
-- `compact` restores validated active or off state and reinjects full context.
-- The bounded `resume` handler path remains for compatibility but is not
-  registered.
+- The bounded `resume` and `compact` handler paths remain for compatibility but
+  are not registered because their host events may be repeated without a safe
+  event identity for deduplication.
+- The first `UserPromptSubmit` after resume or compaction reasserts the stored
+  mode without republishing full `SessionStart` context.
 - Confirmed missing state is initialized without replacing a concurrent
   winner.
 - Unavailable state fails closed to `off`, warns, and is not overwritten.
@@ -110,9 +112,12 @@ Verification was rerun for the current source tree on 2026-07-15:
 | Standards review | HIGH 0, MEDIUM 0, LOW 0 |
 | Spec review | HIGH 0, MEDIUM 0, LOW 0 |
 
-Pre-change GitNexus upstream impact for the prompt hook was LOW. Current
-`detect_changes` maps the entry-point edit to six existing prompt-handling
-processes; focused tests and the full suite cover the changed path.
+Pre-change GitNexus upstream impact for `hooks/hooks.json` was UNKNOWN because
+the JSON registry is not indexed as a code symbol; no existing runtime symbol
+changed. Current `detect_changes` classifies the six-file registry, test, and
+documentation diff as low risk with no affected execution process. The public
+registry RED/GREEN and existing `UserPromptSubmit` restoration tests cover the
+changed contract.
 
 ## Runtime Baseline
 

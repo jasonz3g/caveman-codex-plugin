@@ -122,13 +122,15 @@ hook source requires restoration.
 
 `hooks/hooks.json` registers:
 
-- `SessionStart` with matcher `startup|clear|compact`;
+- `SessionStart` with matcher `startup|clear`;
 - `UserPromptSubmit` without a matcher.
 
-`resume` is intentionally absent from the registry because a host may emit the
-same resume event repeatedly for one turn. The handler retains its bounded
-resume path for compatibility, but normal resumed-thread restoration occurs on
-the first `UserPromptSubmit` event instead of publishing repeated full context.
+`resume` and `compact` are intentionally absent from the registry because a
+host may emit either lifecycle event repeatedly, while `SessionStart` supplies
+no event identity that the plugin can safely deduplicate. The handler retains
+bounded paths for compatibility, but normal resumed- or compacted-thread
+restoration occurs on the first `UserPromptSubmit` event instead of publishing
+repeated full context.
 
 Both commands execute a CommonJS entry point with Node. A hook accepts at most
 1 MiB of stdin, requires fatal UTF-8 JSON decoding, and accepts only a JSON
@@ -168,7 +170,7 @@ Behavior by source:
 | `startup` | Select configured default and explicitly replace this session record. |
 | `clear` | Select configured default and explicitly replace this session record. |
 | `resume` | Compatibility-only handler path; restore validated state or initialize only confirmed missing state. It is not registered. |
-| `compact` | Restore validated state; initialize only confirmed missing state, then reinject authoritative context. |
+| `compact` | Compatibility-only handler path; restore validated state or initialize only confirmed missing state. It is not registered. |
 
 For `startup` and `clear`, a failed write still applies the selected default to
 the current turn and emits the fixed non-persistence warning. For `resume` and
@@ -330,7 +332,7 @@ The automated suite covers:
 - prompt intent, false-positive, negation, and size boundaries;
 - skill metadata, rule filtering, fallback, and off behavior;
 - all four bounded `SessionStart` handler sources plus the registry exclusion
-  of `resume`;
+  of `resume` and `compact`;
 - persistent and stateless `UserPromptSubmit` sequences;
 - session isolation, concurrent initialization, unavailable state, stable
   reads, atomic writes, and durability failures;
